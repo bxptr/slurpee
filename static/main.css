@@ -57,6 +57,5 @@ input:focus {
 .time {
     float: right;
     font-family: monospace;
-    margin-top: -1px;
     font-size: 18px;
 }

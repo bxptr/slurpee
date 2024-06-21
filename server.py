@@ -36,19 +36,22 @@ def scrape(url: str) -> tuple:
     req = requests.get(url)
     soup = bs4.BeautifulSoup(req.content, features = "html.parser")
     content = " ".join([p.text for p in soup.find_all("p")])
-    title = None
+    title = ""
     try:
         title = soup.find("meta", property = "og:title")
-        title = title["content"]
         if not title:
             title = soup.find("title")
-            title = title.string
+            if not title:
+                p = title_prompt.replace("[CONTENT]", content)
+                title = llm.invoke(p)
+                title = title.content
+            else:
+                title = title.string
+
+        else:
+            title = title["content"]
     except:
         pass
-    if not title: # final
-        p = title_prompt.replace("[CONTENT]", content)
-        title = llm.invoke(p)
-        title = title.content
     return (title, content, url)
 
 def summarize(title: str, content: str, url: str) -> None:
