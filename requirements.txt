@@ -1,0 +1,10 @@
+flask
+
+langchain
+langchain_community
+langchain_google_genai
+sentence-transformers
+faiss-cpu
+
+requests
+bs4

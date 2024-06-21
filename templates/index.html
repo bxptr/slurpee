@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slurpee</title>
+    <link rel = "stylesheet" href = "/static/main.css">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+<body>
+    <input placeholder = "Search" id = "query" autofocus>
+    <h1>Slurpee 🥤</h1>
+    <p class = "about"><i>Personal AI-powered link management system.</i></p>
+    <div id = "results">
+        {% for entry in index %}
+            <a href = "{{ entry.url }}">
+                <span class = "time">{{ entry.time }}</span>
+                <p class = "title">{{ entry.title }}</p>
+            </a>
+        {% endfor %}
+    </div>
+    <script>
+        let query = document.getElementById("query");
+        let results_div = document.getElementById("results");
+        let all_results = {{ index | safe }};
+
+        function show(results) {
+            results_div.textContent = "";
+            results.forEach((entry) => {
+                console.log(entry);
+                let link = document.createElement("a");
+                let title = document.createElement("p");
+                let time = document.createElement("span");
+                title.innerHTML = entry.title;
+                title.classList.add("title");
+                time.innerHTML = entry.time;
+                time.classList.add("time");
+                link.appendChild(time);
+                link.appendChild(title);
+                link.href = entry.url;
+                results_div.appendChild(link);
+            });
+        }
+
+        query.addEventListener("input", () => {
+            if (query.value != "") {
+                fetch("/search", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"}, 
+                    body: JSON.stringify({ query: query.value })
+                })
+                .then(results => results.json())
+                .then(results => show(results));
+            } else {
+                show(all_results);
+            }
+        });
+    </script>
+</body>
+</html>
