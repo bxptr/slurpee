@@ -1,6 +1,7 @@
 venv/
 
 *.bin
+*.tar
 *.sh
 .old/
 credentials.json
