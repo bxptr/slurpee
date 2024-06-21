@@ -6,9 +6,8 @@
     <meta name = "viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 <body>
-    <input placeholder = "Search" id = "query" autofocus>
+    <input placeholder = "Semantic search" id = "query" autofocus>
     <h1>Slurpee 🥤</h1>
-    <p class = "about"><i>Personal AI-powered link management system.</i></p>
     <div id = "results">
         {% for entry in index %}
             <a href = "{{ entry.url }}">
