@@ -90,7 +90,12 @@ def route_index() -> object:
         i = i.copy()
         i.pop("vector")
         clean.append(i)
-    return flask.render_template("index.html", index = clean)
+    response = flask.make_response(flask.render_template("index.html", index = clean))
+    # don't cache
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 @app.route("/search", methods = ["POST"])
 def route_search() -> str:
